@@ -44,12 +44,12 @@ pip install -r requirements.txt
 ## Настройка переменных окружения
 
 Создайте файл `.env` в корне проекта:
-
-`NASA_API_KEY`		API-ключ NASA
-`TG_TOKEN`			Токен Telegram-бота
-`TG_CHANNEL` 		Username или chat_id канала
-`PUBLISH_DELAY`		Задержка публикации в часах (по умолчанию 4)
-
+```Python
+`NASA_API_KEY`		# API-ключ NASA
+`TG_TOKEN`			  # Токен Telegram-бота
+`TG_CHANNEL` 		  # Username или chat_id канала
+`PUBLISH_DELAY`		# Задержка публикации в часах (по умолчанию 4)
+```
 ---
 
 ## Как использовать
@@ -99,7 +99,7 @@ python fetch_nasa_epic_image.py
 python fetch_spacex_image.py
 ```
 
-Запуск с указанием ID:
+Запуск с указанием ID запуска:
 
 ```bash
 python fetch_spacex_image.py --id <launch_id>
