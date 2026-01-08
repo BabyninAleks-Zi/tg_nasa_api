@@ -5,6 +5,12 @@ import random
 import argparse
 from dotenv import load_dotenv
 
+load_dotenv()
+TG_TOKEN = os.getenv('TG_TOKEN')
+TG_CHANNEL = os.getenv('TG_CHANNEL')
+PUBLISH_DELAY_HOURS = int(os.getenv('PUBLISH_DELAY', 4))
+PUBLISH_DELAY_SECONDS = PUBLISH_DELAY_HOURS * 3600
+
 
 def get_images(images_folder):
     images = []
@@ -16,11 +22,6 @@ def get_images(images_folder):
 
 
 if __name__ == '__main__':
-    load_dotenv()
-    TG_TOKEN = os.getenv('TG_TOKEN')
-    TG_CHANNEL = os.getenv('TG_CHANNEL')
-    PUBLISH_DELAY_HOURS = int(os.getenv('PUBLISH_DELAY', 4))
-    PUBLISH_DELAY_SECONDS = PUBLISH_DELAY_HOURS * 3600
     parser = argparse.ArgumentParser(
         description='Публикация фотографий в Telegram-канал'
     )

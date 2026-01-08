@@ -4,32 +4,25 @@ import argparse
 from make_api_images import get_image
 
 
-def get_spasex(launch_id=None):
-    if launch_id:
-        url = f'https://api.spacexdata.com/v5/launches/{launch_id}'
-    else:
-        url = f'https://api.spacexdata.com/v5/launches/latest'
+def get_spasex_images_url(launch_id='latest'):
+    url = f'https://api.spacexdata.com/v5/launches/{launch_id}'
     response = requests.get(url)
     response.raise_for_status()
-    data = response.json()
-    flickr_images = data['links']['flickr']['original']
+    response_data = response.json()
+    flickr_images = response_data['links']['flickr']['original']
+    if not flickr_images:
+        raise ValueError('SpaceX не вернул ссылки на изображения')
     return flickr_images
 
 
-def fetch_spacex_launch(launch_id=None):
-    for index, url in enumerate(get_spasex(launch_id)):
+def fetch_spacex_launch(image_urls):
+    for index, url in enumerate(image_urls):
         get_image(url, index)
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--id', help='Введите ID последнего запуска SpaceX')
+    parser = argparse.ArgumentParser(description='Получение изображения с запусков SpaceX')
+    parser.add_argument('--id', default='latest', help='Введите ID последнего запуска SpaceX')
     args = parser.parse_args()
-    try:
-        fetch_spacex_launch(args.id)
-    except ValueError as err:
-            print(f'Ошибка данных: {err}')
-    except requests.exceptions.HTTPError as err:
-            print(f'Сетевая ошибка: {err}')
-    except Exception as err:
-            print(f'Неизвестная ошибка: {err}')
+    image_urls = get_spasex_images_url(args.id)
+    fetch_spacex_launch(image_urls)

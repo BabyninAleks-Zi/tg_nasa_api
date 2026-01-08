@@ -14,11 +14,3 @@ def get_image(url, index):
     with open(f'images/{filename}', 'wb') as file:
         file.write(response.content)
     return filename
-
-
-def get_extension():
-    url = "https://example.com/txt/hello%20world.txt?v=9#python"
-    path = urlparse(url).path
-    path = unquote(path)
-    root, ext = os.path.splitext(path)
-    return ext
