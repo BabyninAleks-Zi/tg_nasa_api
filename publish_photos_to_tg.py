@@ -5,12 +5,6 @@ import random
 import argparse
 from dotenv import load_dotenv
 
-load_dotenv()
-TG_TOKEN = os.getenv('TG_TOKEN')
-TG_CHANNEL = os.getenv('TG_CHANNEL')
-PUBLISH_DELAY_HOURS = int(os.getenv('PUBLISH_DELAY', 4))
-PUBLISH_DELAY_SECONDS = PUBLISH_DELAY_HOURS * 3600
-
 
 def get_images(images_folder):
     images = []
@@ -22,6 +16,11 @@ def get_images(images_folder):
 
 
 if __name__ == '__main__':
+    load_dotenv()
+    tg_token = os.getenv('TG_TOKEN')
+    tg_channel = os.getenv('TG_CHANNEL')
+    publish_delay_hours = int(os.getenv('PUBLISH_DELAY', 4))
+    publish_delay_seconds = publish_delay_hours * 3600    
     parser = argparse.ArgumentParser(
         description='Публикация фотографий в Telegram-канал'
     )
@@ -32,18 +31,18 @@ if __name__ == '__main__':
     )
     args = parser.parse_args()
     images_folder = args.images_folder
-    bot = telegram.Bot(token=TG_TOKEN)
+    bot = telegram.Bot(token=tg_token)
     while True:
         images = get_images(images_folder)
         if not images:
             print('В директории нет изображений')
-            time.sleep(PUBLISH_DELAY_SECONDS)
+            time.sleep(publish_delay_seconds)
             continue
         random.shuffle(images)
         for image_path in images:
             with open(image_path, 'rb') as photo:
                 bot.send_photo(
-                    chat_id=TG_CHANNEL,
+                    chat_id=tg_channel,
                     photo=photo
                 )
-            time.sleep(PUBLISH_DELAY_SECONDS)
+            time.sleep(publish_delay_seconds)
