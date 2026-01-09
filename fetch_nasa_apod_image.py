@@ -6,8 +6,6 @@ from make_api_images import get_image
 
 def get_nasa_apod(nasa_key):
     apod_url = 'https://api.nasa.gov/planetary/apod'
-    if not nasa_key:
-        raise ValueError('NASA_API_KEY не задан')
     params = {
         'api_key': nasa_key,
         'count': 30
@@ -27,6 +25,8 @@ def fetch_nasa_apod_images(apod_items):
 
 if __name__ == '__main__':
     load_dotenv()
-    nasa_key = os.environ['NASA_API_KEY']
+    nasa_key = os.getenv('NASA_API_KEY')
+    if not nasa_key:
+        raise ValueError('NASA_API_KEY не задан')
     apod_items = get_nasa_apod(nasa_key)
     fetch_nasa_apod_images(apod_items)
