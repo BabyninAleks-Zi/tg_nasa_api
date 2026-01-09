@@ -15,9 +15,9 @@ def get_nasa_apod(nasa_key):
     return response.json()
 
 
-def fetch_nasa_apod_images(apod_items):
-    for index, item in enumerate(apod_items):
-        image_url = item.get('hdurl') or item.get('url')
+def fetch_nasa_apod_images(apod_response):
+    for index, apod_image_metadata in enumerate(apod_response):
+        image_url = apod_image_metadata.get('hdurl') or apod_image_metadata.get('url')
         if not image_url:
             raise KeyError('NASA APOD не вернул ссылку на изображение')
         get_image(image_url, index)
@@ -28,5 +28,5 @@ if __name__ == '__main__':
     nasa_key = os.getenv('NASA_API_KEY')
     if not nasa_key:
         raise ValueError('NASA_API_KEY не задан')
-    apod_items = get_nasa_apod(nasa_key)
-    fetch_nasa_apod_images(apod_items)
+    apod_response = get_nasa_apod(nasa_key)
+    fetch_nasa_apod_images(apod_response)
