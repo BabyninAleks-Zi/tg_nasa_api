@@ -7,8 +7,6 @@ from make_api_images import get_image
 
 def get_nasa_epic(nasa_key):
     epic_url = 'https://api.nasa.gov/EPIC/api/natural/images'
-    if not nasa_key:
-        raise ValueError('NASA_API_KEY не задан')
     params = {
         'api_key': nasa_key,
     }
@@ -27,6 +25,8 @@ def fetch_nasa_epic_images(nasa_epic_items):
 
 if __name__ == '__main__':
     load_dotenv()
-    nasa_key = os.environ['NASA_API_KEY']
+    nasa_key = os.getenv('NASA_API_KEY')
+    if not nasa_key:
+        raise ValueError('NASA_API_KEY не задан')
     nasa_epic_items = get_nasa_epic(nasa_key)
     fetch_nasa_epic_images(nasa_epic_items)
